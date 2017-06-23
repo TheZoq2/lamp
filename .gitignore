@@ -1,0 +1,11 @@
+target/
+**/*.rs.bk
+
+rusty-tags.vi
+
+# Elm things
+main.js
+elm-stuff
+
+# Other things
+.gdb_history
