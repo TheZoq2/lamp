@@ -1,14 +1,14 @@
 import Html exposing (..)
 import Html
-import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http
 import Json.Encode
 import Json.Decode
 
 
-type LedCommand =
-    Color Int Int Int
+type LedCommand
+    = Color Int Int Int
+    | Toggle
 
 
 
@@ -60,6 +60,8 @@ sendCommand command =
                 Json.Encode.object
                     [ ("Color", Json.Encode.list <| List.map Json.Encode.int [r,g,b])
                     ]
+            Toggle ->
+                Json.Encode.string "Toggle"
 
         request = 
             Http.post "led" (Http.jsonBody encoder) Json.Decode.value
@@ -74,13 +76,14 @@ sendCommand command =
 view : Model -> Html Msg
 view model =
     div []
-    [ h1 [] [text "LED controller"]
-    , button [onClick (SendCommand (Color 255 255 255))] [text "White"]
-    , button [onClick (SendCommand (Color 255 0 0))] [text "Red"]
-    , button [onClick (SendCommand (Color 0 255 0))] [text "Green"]
-    , button [onClick (SendCommand (Color 0 0 255))] [text "Blue"]
-    , button [onClick (SendCommand (Color 255 172 68))] [text "Warm white"]
-    ]
+        [ h1 [] [text "LED controller"]
+        , button [onClick (SendCommand (Color 255 255 255))] [text "White"]
+        , button [onClick (SendCommand (Color 255 0 0))] [text "Red"]
+        , button [onClick (SendCommand (Color 0 255 0))] [text "Green"]
+        , button [onClick (SendCommand (Color 0 0 255))] [text "Blue"]
+        , button [onClick (SendCommand (Color 255 172 68))] [text "Warm white"]
+        , button [onClick (SendCommand Toggle)] [text "Toggle"]
+        ]
 
 
 

@@ -9,16 +9,16 @@ use iron::prelude::*;
 use iron::Handler;
 use iron::status;
 
-use std::sync::Mutex;
+use std::sync::{Mutex, Arc};
 
 pub struct LedQueryHandler
 {
-    command_sender: Mutex<Sender<LedCommand>>
+    command_sender: Arc<Mutex<Sender<LedCommand>>>
 }
 
 impl LedQueryHandler
 {
-    pub fn new(command_sender: Mutex<Sender<LedCommand>>) -> LedQueryHandler
+    pub fn new(command_sender: Arc<Mutex<Sender<LedCommand>>>) -> LedQueryHandler
     {
         LedQueryHandler {
             command_sender
