@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 extern crate ws281x;
 
 use std::thread;

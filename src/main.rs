@@ -2,9 +2,7 @@ use std::path::PathBuf;
 use std::sync::{Mutex, Arc};
 
 mod led;
-use led::LedCommand;
 mod web;
-mod button;
 
 extern crate iron;
 extern crate mount;
@@ -21,9 +19,6 @@ use iron::headers;
 use iron::modifiers::Header;
 use std::thread;
 
-// use std::sync::mpsc::{Sender, Receiver, channel, TryRecvError};
-use std::sync::mpsc::{Sender};
-
 pub fn handle_index_query(_: &mut Request) -> IronResult<Response>
 {
     let header = Header(headers::ContentType::html());
@@ -35,7 +30,7 @@ pub fn handle_index_query(_: &mut Request) -> IronResult<Response>
 fn main() {
     let sender = Arc::new(Mutex::new(led::start_led_thread()));
 
-    let mut led_router = router!
+    let led_router = router!
     (
         led: post "/" => web::LedQueryHandler::new(sender.clone())
     );
@@ -49,6 +44,6 @@ fn main() {
         .mount("static/", staticfile::Static::new(PathBuf::from("files")))
         .mount("led/", led_router);
 
-    Iron::new(mount).http("192.168.1.8:3000").unwrap();
+    Iron::new(mount).http("192.168.1.5:80").unwrap();
 
 }

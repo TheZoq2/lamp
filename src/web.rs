@@ -31,7 +31,7 @@ impl Handler for LedQueryHandler
     fn handle(&self, request: &mut Request) -> IronResult<Response>
     {
         let mut body_content = String::new();
-        request.body.read_to_string(&mut body_content);
+        request.body.read_to_string(&mut body_content).unwrap();
 
         // Attempt to deserialize the command
         match serde_json::from_str(&body_content)
